@@ -51,3 +51,148 @@ docker-compose stop
 docker-compose down
 ```
 
+## PaaS
+
+```bash
+git clone https://github.com/oswaldderiemaecker/paas
+```
+
+### Cloud Foundry
+
+```bash
+cf dev start -m 3072 -c 4
+```
+
+#### Clone Sample 
+
+```bash
+git clone https://github.com/cloudfoundry-samples/spring-music
+cd ./spring-music
+cf login -a api.local.pcfdev.io --skip-ssl-validation
+```
+
+#### Build the app
+
+```bash
+./gradlew assemble
+```
+
+#### Push the app
+
+```bash
+cf push --hostname spring-music
+```
+
+Open the sample app in your browser:
+requested state: started
+instances: 1/1
+usage: 512M x 1 instances
+routes: spring-music.local.pcfdev.io
+
+### AWS ECS
+
+#### Clone Sample
+
+```bash
+git clone https://github.com/Pierozi/aws-ecs-php-micro-services.git
+```
+
+### Swarm
+
+#### Creating the Virtual Machines
+```bash
+docker-machine create --driver virtualbox myvm1
+docker-machine create --driver virtualbox myvm2
+
+docker-machine ls
+```
+
+#### Initializing the Swarm
+
+```bash
+docker-machine ssh myvm1 "docker swarm init --advertise-addr 192.168.99.100:2377"
+Swarm initialized: current node (i2vzfx6k465cxzsivfbiohddt) is now a manager.
+
+To add a worker to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-3rwnhvhfqu4pntyzs6la2h4pamm94a6gfuzu27j611tnw6cbw9-ay5df9c4emm8omrta0z2whm88 192.168.99.101:2377
+
+To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+```
+
+#### Worker Joining the Manager
+
+```bash
+docker-machine ssh myvm2 "docker swarm join --token SWMTKN-1-3rwnhvhfqu4pntyzs6la2h4pamm94a6gfuzu27j611tnw6cbw9-ay5df9c4emm8omrta0z2whm88 192.168.99.101:2377"
+This node joined a swarm as a worker.
+```
+```bash
+docker-machine ssh myvm1 "docker node ls"
+```
+
+#### Deploying Application
+
+```bash
+docker-machine scp docker-service.yml myvm1:~
+docker-machine ssh myvm1 "docker stack deploy -c docker-service.yml myapp"
+docker-machine ssh myvm1 "docker stack ps myapp"
+```
+
+#### Cleanup
+
+```bash
+docker-machine ssh myvm1 "docker stack rm myapp"
+```
+
+### Minikuke
+
+```bash
+minikube start
+```
+
+#### Application Configuration
+
+```bash
+kubectl create secret generic mysql-pass --from-literal=password=YOUR_PASSWORD
+```
+
+#### The Database Metadata
+
+```bash
+wget https://raw.githubusercontent.com/kubernetes/website/master/content/en/examples/application/wordpress/mysql-deployment.yaml
+```
+
+#### Deploying the Database
+
+```bash
+kubectl create -f https://k8s.io/examples/application/wordpress/mysql-deployment.yaml
+kubectl get pvc
+kubectl get pods
+```
+
+#### The Application Metadata
+
+```bash
+wget https://raw.githubusercontent.com/kubernetes/website/master/content/en/examples/application/wordpress/wordpress-deployment.yaml
+```
+
+#### Deploying the WP
+
+```bash
+kubectl create -f https://k8s.io/examples/application/wordpress/wordpress-deployment.yaml
+kubectl get pvc
+kubectl get services wordpress
+```
+
+#### Cleanup
+
+```bash
+kubectl delete secret mysql-pass
+kubectl delete deployment -l app=wordpress
+kubectl delete service -l app=wordpress
+kubectl delete pvc -l app=wordpress
+```
+
+
+
+
