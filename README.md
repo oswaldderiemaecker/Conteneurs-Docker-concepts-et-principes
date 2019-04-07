@@ -135,7 +135,9 @@ docker-machine ssh myvm1 "docker node ls"
 #### Deploying Application
 
 ```bash
+cd docker-training
 docker-machine scp docker-service.yml myvm1:~
+docker-machine ssh myvm1 "docker pull oswald/docker-training:latest"
 docker-machine ssh myvm1 "docker stack deploy -c docker-service.yml myapp"
 docker-machine ssh myvm1 "docker stack ps myapp"
 ```
