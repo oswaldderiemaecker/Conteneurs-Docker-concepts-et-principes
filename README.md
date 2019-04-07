@@ -193,6 +193,24 @@ kubectl delete service -l app=wordpress
 kubectl delete pvc -l app=wordpress
 ```
 
+### Rancher
+
+#### Install and run Rancher
+
+```bash
+docker-machine start rancheros
+eval $(docker-machine env rancheros)
+docker-machine ip rancheros
+```
+
+#### Configure the Ethereum Helm Package
+
+```
+geth.account.address = 0xab70383d9207c6cc43ab85eeef9db4d33a8ad4e8
+geth.account.privateKey = 38000e15ca07309cc2d0b30faaaadb293c45ea222a117e9e9c6a2a9872bb3bcf
+geth.account.secret = any passphrase that Geth will use to encrypt your private key
+```
+
 
 
 
