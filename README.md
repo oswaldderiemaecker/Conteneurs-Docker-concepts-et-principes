@@ -188,6 +188,8 @@ kubectl get pvc
 kubectl get services wordpress
 ```
 
+Visit: http://192.168.99.103:32334/wp-admin/install.php
+
 #### Cleanup
 
 ```bash
