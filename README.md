@@ -219,7 +219,9 @@ geth.account.secret = any passphrase that Geth will use to encrypt your private 
 
 ### AWS ECS
 
-Follow the tutorial at: https://aws.amazon.com/getting-started/tutorials/deploy-docker-containers/
+Follow the tutorial at: https://console.aws.amazon.com/ecs/home?region=us-east-1#/firstRun
+
+https://aws.amazon.com/getting-started/tutorials/deploy-docker-containers/
 
 
 
