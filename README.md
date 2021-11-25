@@ -96,6 +96,14 @@ eval $(docker-machine env)
 docker ps
 ```
 
+Get the IP of the docker-machine
+
+```bash
+docker-machine ip
+```
+
+Goto http://<DOCKER-MACHINE-IP>:8080/
+
 ### Swarm
 
 #### Initializing the Swarm
