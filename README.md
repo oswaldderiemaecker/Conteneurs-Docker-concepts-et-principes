@@ -2,9 +2,9 @@
 
 ## AWS Lab Instance
 
-AMI ID: ami-0dc53f9699f425293
-Instance Type t3.medium
-Security Group Ingress on ports 22, 8080 allow all traffic on 0.0.0.0/0
+* AMI ID: ami-0dc53f9699f425293
+* Instance Type t3.medium
+* Security Group Ingress on ports 22, 8080 allow all traffic on 0.0.0.0/0
 
 ## Docker 
 
