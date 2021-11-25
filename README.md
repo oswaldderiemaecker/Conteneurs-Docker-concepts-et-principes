@@ -93,20 +93,20 @@ docker-compose down
 git clone https://github.com/Pierozi/aws-ecs-php-micro-services.git
 ```
 
-### Swarm
+### Docker-Machine
 
 #### Creating the Virtual Machines
 ```bash
 docker-machine create --driver virtualbox myvm1
-docker-machine create --driver virtualbox myvm2
-
 docker-machine ls
 ```
+
+### Swarm
 
 #### Initializing the Swarm
 
 ```bash
-docker-machine ssh myvm1 "docker swarm init --advertise-addr 192.168.99.100:2377"
+docker swarm init --advertise-addr 192.168.99.100:2377
 Swarm initialized: current node (i2vzfx6k465cxzsivfbiohddt) is now a manager.
 
 To add a worker to this swarm, run the following command:
@@ -119,27 +119,27 @@ To add a manager to this swarm, run 'docker swarm join-token manager' and follow
 #### Worker Joining the Manager
 
 ```bash
-docker-machine ssh myvm2 "docker swarm join --token SWMTKN-1-3rwnhvhfqu4pntyzs6la2h4pamm94a6gfuzu27j611tnw6cbw9-ay5df9c4emm8omrta0z2whm88 192.168.99.101:2377"
+docker swarm join --token SWMTKN-1-3rwnhvhfqu4pntyzs6la2h4pamm94a6gfuzu27j611tnw6cbw9-ay5df9c4emm8omrta0z2whm88 192.168.99.101:2377
 This node joined a swarm as a worker.
 ```
 ```bash
-docker-machine ssh myvm1 "docker node ls"
+docker node ls
 ```
 
 #### Deploying Application
 
 ```bash
 cd docker-training
-docker-machine scp docker-service.yml myvm1:~
-docker-machine ssh myvm1 "docker pull oswald/docker-training:latest"
-docker-machine ssh myvm1 "docker stack deploy -c docker-service.yml myapp"
-docker-machine ssh myvm1 "docker stack ps myapp"
+cat docker-service.yml
+docker pull oswald/docker-training:latest
+docker stack deploy -c docker-service.yml myapp
+docker stack ps myapp
 ```
 
 #### Cleanup
 
 ```bash
-docker-machine ssh myvm1 "docker stack rm myapp"
+docker stack rm myapp
 ```
 
 ### Minikuke
