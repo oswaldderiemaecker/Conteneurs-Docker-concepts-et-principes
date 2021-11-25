@@ -1,11 +1,16 @@
 # Conteneurs Docker, concepts et principes
 
+## AWS Lab Instance
+
+Type: t3.medium
+Security Group Ingress on ports 22, 8080 allow all traffic on 0.0.0.0/0
+
 ## Docker 
 
 ### Clone Repository
 
 ```bash
-git clone git@github.com:oswaldderiemaecker/docker-training.git
+git clone https://github.com/oswaldderiemaecker/docker-training.git
 ```
 
 ### Docker install
