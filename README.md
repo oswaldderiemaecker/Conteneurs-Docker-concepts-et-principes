@@ -85,20 +85,15 @@ docker-compose down
 
 ## CaaS
 
-### AWS ECS
-
-#### Clone Sample
-
-```bash
-git clone https://github.com/Pierozi/aws-ecs-php-micro-services.git
-```
-
 ### Docker-Machine
 
 #### Creating the Virtual Machines
 ```bash
 docker-machine create --driver virtualbox myvm1
 docker-machine ls
+docker-machine env
+eval $(docker-machine env)
+docker ps
 ```
 
 ### Swarm
@@ -252,6 +247,14 @@ Follow instructions.
 Follow the tutorial at: https://console.aws.amazon.com/ecs/home?region=us-east-1#/firstRun
 
 https://aws.amazon.com/getting-started/tutorials/deploy-docker-containers/
+
+### AWS ECS
+
+#### Clone Sample
+
+```bash
+git clone https://github.com/Pierozi/aws-ecs-php-micro-services.git
+```
 
 
 
