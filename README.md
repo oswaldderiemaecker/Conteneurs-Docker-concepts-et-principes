@@ -148,6 +148,8 @@ docker stack ps myapp
 docker stack rm myapp
 ```
 
+NOTE: Terminate the Swarm worker instance.
+
 ### Minikuke
 
 #### Install Minikube
