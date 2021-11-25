@@ -2,7 +2,8 @@
 
 ## AWS Lab Instance
 
-Type: t3.medium
+AMI ID: ami-0dc53f9699f425293
+Instance Type t3.medium
 Security Group Ingress on ports 22, 8080 allow all traffic on 0.0.0.0/0
 
 ## Docker 
@@ -18,8 +19,7 @@ git clone https://github.com/oswaldderiemaecker/docker-training.git
 On AWS:
 
 ```bash
-sudo amazon-linux-extras install docker
-sudo usermod -aG docker ${USER}
+sudo usermod -aG docker $USER && newgrp docker
 ```
 
 Quit session and relog
@@ -29,11 +29,11 @@ Quit session and relog
 ```bash
 docker build -t myapp_php .
 docker images
-docker run -p 8080:80 myapp_php
+docker run -d -p 8080:80 myapp_php
 docker ps
 ```
 
-Visit: http://192.168.99.100:8080/
+Visit: http://<PUBLIC_IP>:8080/
 
 #### Modifying Dockerfile
 
@@ -47,12 +47,28 @@ docker build -t myapp_php .
 docker images
 ```
 
+Clean up:
+
+```bash
+docker ps
+docker stop 8c4dadb01bd7
+docker rm 8c4dadb01bd7
+```
+
+
 #### Docker Registry & docker pull
 
 visit: https://hub.docker.com/
 
 ```bash
 docker pull redis
+```
+
+#### Install Docker compose
+
+```bash
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
 ```
 
 #### Docker Compose
@@ -66,44 +82,6 @@ docker-compose logs --tail=10 -f
 docker-compose stop
 docker-compose down
 ```
-
-## PaaS
-
-```bash
-git clone https://github.com/oswaldderiemaecker/paas
-```
-
-### Cloud Foundry
-
-```bash
-cf dev start -m 3072 -c 4
-```
-
-#### Clone Sample 
-
-```bash
-git clone https://github.com/cloudfoundry-samples/spring-music
-cd ./spring-music
-cf login -a api.local.pcfdev.io --skip-ssl-validation
-```
-
-#### Build the app
-
-```bash
-./gradlew assemble
-```
-
-#### Push the app
-
-```bash
-cf push --hostname spring-music
-```
-
-Open the sample app in your browser:
-requested state: started
-instances: 1/1
-usage: 512M x 1 instances
-routes: spring-music.local.pcfdev.io
 
 ## CaaS
 
@@ -166,8 +144,31 @@ docker-machine ssh myvm1 "docker stack rm myapp"
 
 ### Minikuke
 
+#### Install Minikube
+
+##### Install kubectl
+
 ```bash
-minikube start
+curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+chmod +x ./kubectl
+sudo mv ./kubectl /usr/local/bin/kubectl
+kubectl version --client
+```
+
+##### Install minikube
+
+```bash
+curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 \
+&& chmod +x minikube \
+&& sudo mv minikube /usr/local/bin/
+minikube version
+yum install conntrack
+```
+
+```bash
+sudo -i
+export PATH=$PATH:/usr/local/bin
+minikube start --driver=docker
 ```
 
 #### Application Configuration
@@ -185,7 +186,7 @@ wget https://raw.githubusercontent.com/kubernetes/website/master/content/en/exam
 #### Deploying the Database
 
 ```bash
-kubectl create -f https://k8s.io/examples/application/wordpress/mysql-deployment.yaml
+kubectl create -f mysql-deployment.yaml
 kubectl get pvc
 kubectl get pods
 ```
@@ -198,13 +199,21 @@ wget https://raw.githubusercontent.com/kubernetes/website/master/content/en/exam
 
 #### Deploying the WP
 
+Replace Service Type to NodePort!
+
 ```bash
-kubectl create -f https://k8s.io/examples/application/wordpress/wordpress-deployment.yaml
+kubectl create -f wordpress-deployment.yaml
 kubectl get pvc
 kubectl get services wordpress
 ```
 
-Visit: http://192.168.99.103:32334/wp-admin/install.php
+Open a new terminal and
+
+```bash
+minikube service wordpress
+apt-get install lynx
+lynx http://172.31.71.196:8080
+```
 
 #### Cleanup
 
@@ -220,18 +229,15 @@ kubectl delete pvc -l app=wordpress
 #### Install and run Rancher
 
 ```bash
-docker-machine start rancheros
-eval $(docker-machine env rancheros)
-docker-machine ip rancheros
+docker run -d --restart=unless-stopped \
+  -p 80:80 -p 443:443 \
+  --privileged \
+  rancher/rancher:latest
 ```
 
-#### Configure the Ethereum Helm Package
+Open https://<PUBLIC_IP>/
 
-```
-geth.account.address = 0xab70383d9207c6cc43ab85eeef9db4d33a8ad4e8
-geth.account.privateKey = 38000e15ca07309cc2d0b30faaaadb293c45ea222a117e9e9c6a2a9872bb3bcf
-geth.account.secret = any passphrase that Geth will use to encrypt your private key
-```
+Follow instructions.
 
 ### AWS ECS
 
