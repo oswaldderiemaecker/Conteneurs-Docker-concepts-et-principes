@@ -116,6 +116,12 @@ To add a worker to this swarm, run the following command:
 To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
 ```
 
+#### Adding an AWS worker
+
+* AMI ID: ami-0dc53f9699f425293
+* Instance Type t1.micro
+* Security Group Ingress on all ports and allow all traffic on 0.0.0.0/0
+
 #### Worker Joining the Manager
 
 ```bash
