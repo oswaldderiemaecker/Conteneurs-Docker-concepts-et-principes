@@ -8,6 +8,17 @@
 git clone git@github.com:oswaldderiemaecker/docker-training.git
 ```
 
+### Docker install
+
+On AWS:
+
+```bash
+sudo amazon-linux-extras install docker
+sudo usermod -aG docker ${USER}
+```
+
+Quit session and relog
+
 #### Build the application image
 
 ```bash
