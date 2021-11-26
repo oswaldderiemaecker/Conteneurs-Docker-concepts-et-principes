@@ -196,12 +196,10 @@ curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/miniku
 && chmod +x minikube \
 && sudo mv minikube /usr/local/bin/
 minikube version
-yum install conntrack
+sudo apt install conntrack
 ```
 
 ```bash
-sudo -i
-export PATH=$PATH:/usr/local/bin
 minikube start --driver=docker
 ```
 
@@ -245,8 +243,8 @@ Open a new terminal and
 
 ```bash
 minikube service wordpress
-apt-get install lynx
-lynx http://172.31.71.196:8080
+sudo apt-get install lynx
+lynx http://<MINIKUBE_IP>:<MINIKUBE_PORT>
 ```
 
 #### Cleanup
@@ -256,6 +254,10 @@ kubectl delete secret mysql-pass
 kubectl delete deployment -l app=wordpress
 kubectl delete service -l app=wordpress
 kubectl delete pvc -l app=wordpress
+```
+    
+```bash
+minikube stop
 ```
 
 ### Rancher
