@@ -96,6 +96,10 @@ docker-compose stop
 docker-compose down
 ```
 
+#### Example 2
+
+https://github.com/oswaldderiemaecker/webinar-kubernetes-api-gateway/blob/master/docs/docker-compose.md
+
 ## CaaS
 
 ### Docker-Machine
@@ -255,6 +259,10 @@ kubectl delete deployment -l app=wordpress
 kubectl delete service -l app=wordpress
 kubectl delete pvc -l app=wordpress
 ```
+    
+#### Example 2
+    
+https://github.com/oswaldderiemaecker/webinar-kubernetes-api-gateway/blob/master/docs/minikube.md
     
 ```bash
 minikube stop
