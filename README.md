@@ -32,10 +32,12 @@ Quit session and relog
 #### Build the application image
 
 ```bash
+cat Dockerfile
 docker build -t myapp_php .
 docker images
 docker run -d -p 8080:80 myapp_php
 docker ps
+docker exec -ti 1d921c1c08b1 /bin/bash
 ```
 
 Visit: http://<PUBLIC_IP>:8080/
@@ -44,12 +46,17 @@ Visit: http://<PUBLIC_IP>:8080/
 
 Add:
 ```bash
-RUN apt-get install -y vim
+RUN apt-get install -y htmldoc
+vi public/index.php # add echo '<br>Update';
 ```
 
 ```bash
 docker build -t myapp_php .
 docker images
+# docker push
+docker ps
+docker stop 8c4dadb01bd7
+docker run -d -p 8080:80 myapp_php
 ```
 
 Clean up:
@@ -57,6 +64,7 @@ Clean up:
 ```bash
 docker ps
 docker stop 8c4dadb01bd7
+docker ps -a
 docker rm 8c4dadb01bd7
 ```
 
@@ -67,13 +75,13 @@ visit: https://hub.docker.com/
 
 ```bash
 docker pull redis
+docker images
 ```
 
 #### Install Docker compose
 
 ```bash
-sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
+sudo apt install docker-compose
 ```
 
 #### Docker Compose
@@ -114,12 +122,12 @@ Goto http://<DOCKER-MACHINE-IP>:8080/
 #### Initializing the Swarm
 
 ```bash
-docker swarm init --advertise-addr 192.168.99.100:2377
+docker swarm init --advertise-addr <PUBLIC_IP>:2377
 Swarm initialized: current node (i2vzfx6k465cxzsivfbiohddt) is now a manager.
 
 To add a worker to this swarm, run the following command:
 
-    docker swarm join --token SWMTKN-1-3rwnhvhfqu4pntyzs6la2h4pamm94a6gfuzu27j611tnw6cbw9-ay5df9c4emm8omrta0z2whm88 192.168.99.101:2377
+    docker swarm join --token SWMTKN-1-3rwnhvhfqu4pntyzs6la2h4pamm94a6gfuzu27j611tnw6cbw9-ay5df9c4emm8omrta0z2whm88 <PUBLIC_IP>:2377
 
 To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
 ```
@@ -127,15 +135,23 @@ To add a manager to this swarm, run 'docker swarm join-token manager' and follow
 #### Adding an AWS worker
 
 * AMI ID: ami-0dc53f9699f425293
-* Instance Type t1.micro
+* Instance Type t2.micro
+* Tag: Name = CaaS - <YOUR_NAME> - Swarm Worker
 * Security Group Ingress on all ports and allow all traffic on 0.0.0.0/0
 
 #### Worker Joining the Manager
+    
+```bash
+sudo usermod -aG docker $USER && newgrp docker
+```
 
 ```bash
 docker swarm join --token SWMTKN-1-3rwnhvhfqu4pntyzs6la2h4pamm94a6gfuzu27j611tnw6cbw9-ay5df9c4emm8omrta0z2whm88 192.168.99.101:2377
 This node joined a swarm as a worker.
 ```
+    
+On the manager:
+
 ```bash
 docker node ls
 ```
@@ -149,6 +165,8 @@ docker pull oswald/docker-training:latest
 docker stack deploy -c docker-service.yml myapp
 docker stack ps myapp
 ```
+    
+Visit: http://<PUBLIC_IP>/
 
 #### Cleanup
 
