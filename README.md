@@ -314,6 +314,10 @@ echo '{mariadb.auth.database: user0db, mariadb.auth.username: user1, wordpressPa
 helm upgrade -f values.yaml wordpress-1638272462 bitnami/wordpress
 helm get values wordpress-1638272462
 helm pull bitnami/wordpress
+tar xvzf wordpress-12.2.3.tgz
+cd wordpress && cat README.md
+helm upgrade wordpress-1638272462 bitnami/wordpress --set service.type=NodePort --set wordpressPassword=testing
+helm get values wordpress-1638272462 
 helm uninstall wordpress-1638272462
 ```
 
