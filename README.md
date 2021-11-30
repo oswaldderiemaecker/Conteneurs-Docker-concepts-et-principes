@@ -308,6 +308,10 @@ helm show values bitnami/wordpress
 helm show values bitnami/wordpress | grep -A10 -B5 mariadb.auth.username
 echo '{mariadb.auth.database: user0db, mariadb.auth.username: user0}' > values.yaml
 helm install -f values.yaml bitnami/wordpress --generate-name
+echo '{mariadb.auth.database: user0db, mariadb.auth.username: user1}' > values.yaml
+helm upgrade -f values.yaml wordpress-1638272462 bitnami/wordpress
+echo '{mariadb.auth.database: user0db, mariadb.auth.username: user1, wordpressPassword: testing}' > values.yaml
+helm upgrade -f values.yaml wordpress-1638272462 bitnami/wordpress
 ```
 
 ```bash
