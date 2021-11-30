@@ -304,7 +304,8 @@ helm uninstall wordpress
 #### Customizing
 
 ```bash
-helm show values bitnami/wordpress #customizing
+helm show values bitnami/wordpress
+helm show values bitnami/wordpress | grep -A10 -B5 mariadb.auth.username
 echo '{mariadb.auth.database: user0db, mariadb.auth.username: user0}' > values.yaml
 helm install -f values.yaml bitnami/wordpress --generate-name
 ```
