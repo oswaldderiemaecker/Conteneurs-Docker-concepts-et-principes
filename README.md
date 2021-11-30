@@ -53,6 +53,7 @@ vi public/index.php # add echo '<br>Update';
 ```bash
 docker build -t myapp_php .
 docker images
+docker history myapp_php
 # docker push
 docker ps
 docker stop 8c4dadb01bd7
