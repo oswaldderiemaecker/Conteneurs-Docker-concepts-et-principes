@@ -312,6 +312,7 @@ echo '{mariadb.auth.database: user0db, mariadb.auth.username: user1}' > values.y
 helm upgrade -f values.yaml wordpress-1638272462 bitnami/wordpress
 echo '{mariadb.auth.database: user0db, mariadb.auth.username: user1, wordpressPassword: testing}' > values.yaml
 helm upgrade -f values.yaml wordpress-1638272462 bitnami/wordpress
+helm get values wordpress-1638272462
 ```
 
 ```bash
