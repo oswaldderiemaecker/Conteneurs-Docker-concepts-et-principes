@@ -212,6 +212,8 @@ minikube start --driver=docker
 
 ```bash
 kubectl create secret generic mysql-pass --from-literal=password=YOUR_PASSWORD
+kubectl get secret
+kubectl describe secret mysql-pass
 ```
 
 #### The Database Metadata
@@ -224,6 +226,7 @@ wget https://raw.githubusercontent.com/kubernetes/website/master/content/en/exam
 
 ```bash
 kubectl create -f mysql-deployment.yaml
+kubectl get deployments
 kubectl get pvc
 kubectl get pods
 ```
@@ -240,6 +243,7 @@ Replace Service Type to NodePort!
 
 ```bash
 kubectl create -f wordpress-deployment.yaml
+kubectl get deployments
 kubectl get pvc
 kubectl get services wordpress
 ```
@@ -251,6 +255,12 @@ minikube service wordpress
 sudo apt-get install lynx
 lynx http://<MINIKUBE_IP>:<MINIKUBE_PORT>
 ```
+    
+```bash
+kubectl port-forward --address 0.0.0.0 svc/wordpress <MINIKUBE_PORT>:80
+```
+
+Visit: http://<PUBLIC_IP>:<MINIKUBE_PORT>
 
 #### Cleanup
 
@@ -264,7 +274,41 @@ kubectl delete pvc -l app=wordpress
 #### Example 2
     
 https://github.com/oswaldderiemaecker/webinar-kubernetes-api-gateway/blob/master/docs/minikube.md
+
+### Helm
     
+```bash
+helm list
+helm uninstall services
+```
+    
+#### Adding Repo
+
+```bash
+helm repo add brigade https://brigadecore.github.io/charts
+helm repo list
+helm search repo brigade
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo list
+```
+#### Searching and installing
+
+```bash
+helm search repo wordpress --max-col-width 80
+helm install bitnami/wordpress --generate-name
+helm list
+helm status wordpress-1638265884
+helm uninstall wordpress
+```
+
+#### Customizing
+
+```bash
+helm show values bitnami/wordpress #customizing
+echo '{mariadb.auth.database: user0db, mariadb.auth.username: user0}' > values.yaml
+helm install -f values.yaml bitnami/wordpress --generate-name
+```
+
 ```bash
 minikube stop
 ```
@@ -290,13 +334,6 @@ Follow the tutorial at: https://console.aws.amazon.com/ecs/home?region=us-east-1
 
 https://aws.amazon.com/getting-started/tutorials/deploy-docker-containers/
 
-### AWS ECS
-
-#### Clone Sample
-
-```bash
-git clone https://github.com/Pierozi/aws-ecs-php-micro-services.git
-```
 
 
 
