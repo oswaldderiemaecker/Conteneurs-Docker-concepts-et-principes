@@ -336,6 +336,12 @@ docker run -d --restart=unless-stopped \
   --privileged \
   rancher/rancher:latest
 ```
+    
+```bash
+docker ps
+docker logs -f ea54954292b2
+```
+
 
 Open https://<PUBLIC_IP>/
 
