@@ -67,6 +67,7 @@ docker ps
 docker stop 8c4dadb01bd7
 docker ps -a
 docker rm 8c4dadb01bd7
+docker system prune
 ```
 
 
